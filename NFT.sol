@@ -2,8 +2,8 @@
 
 pragma solidity ^0.8.19;
 
-//import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
-import "../../Codigos_ejemplo/ERC20-ERC721/ERC721.sol"
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
+//import "../../Codigos_ejemplo/ERC20-ERC721/ERC721.sol"
 contract NFT is ERC721 {
     //constante que guarda el precio del NFT
     uint256 PRICE = 0.1 ether;
@@ -18,7 +18,7 @@ contract NFT is ERC721 {
     //hacemos un mapping para guardar los datos del nft en variables tipo datos
     mapping(uint256 => DatosNFT) datos;
     //el contructor del ERC721 necesita name y symbol
-    constructor() ERC721("Paisaje", "PSJ") {
+    constructor() ERC721("Beholder_IronMan", "BIM") {
 
     }
     //funcion para mintear los nft, evalua que el valor que envia msg.sender sea mayor que el precio del nft
@@ -31,7 +31,7 @@ contract NFT is ERC721 {
     }
     //funcion que pasa los metadatos al token y devuelve un string con los datos)sobreescribe la funcion del ERC721
     function tokenURI(uint256 tokenId) public override view returns (string memory) {
-        /*
+        /* Estructura estandar URI
         {
             "name": "PAISAJE",
             "description": "Un paisaje bonito",
