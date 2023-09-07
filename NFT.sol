@@ -2,12 +2,12 @@
 
 pragma solidity ^0.8.19;
 
-import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
-
+//import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
+import "../../Codigos_ejemplo/ERC20-ERC721/ERC721.sol"
 contract NFT is ERC721 {
     //constante que guarda el precio del NFT
     uint256 PRICE = 0.1 ether;
-    //variable que gurda la cantidad de token que van saliendo
+    //variable que guarda la cantidad de token que van saliendo
     uint256 totalSupply = 0;
 
     //las variables struct tipo DatosNFT guardan las caracteristicas de nuestro NFT
@@ -38,4 +38,16 @@ contract NFT is ERC721 {
             "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxleHBsb3JlLWZlZWR8MXx8fGVufDB8fHx8fA%3D%3D&w=1000&q=80"
         }
         */
-        
+        //devuelve todos los metadatos empaquetados y codificados
+        return string(
+            abi.encodePacked(
+                '{',
+                    '"name": "Beholder",',
+                    '"description": "Una imagen sugerida de Ironman en la sombra",',
+                    '"image": "https://www.pxfuel.com/en/desktop-wallpaper-pizjc",',
+                '}'
+            )
+        );
+    }
+
+}
