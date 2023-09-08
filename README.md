@@ -29,19 +29,20 @@ To mint an NFT, use the `mint` function by sending the required payment in Ether
 
 Example of minting an NFT in Solidity:
 
-```solidity```
+```solidity
 function mint() public payable {
     require(msg.value >= 0.1 ether, "Payment insufficient to mint NFT");
     _mint(msg.sender, totalSupply);
     totalSupply++;
 }
+```
 
 ## Viewing NFT Metadata
 You can retrieve the metadata for a specific NFT by using the tokenURI function, which overrides the ERC721 standard function. The metadata includes the name, description, and an image URL.
 
 Example of retrieving NFT metadata:
 
-```solidity```
+```solidity
 
 function tokenURI(uint256 tokenId) public override view returns (string memory) {
     return string(
