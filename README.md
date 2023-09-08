@@ -27,7 +27,7 @@ To interact with this contract, you can follow these steps:
 
 To mint an NFT, use the `mint` function by sending the required payment in Ether. The price per NFT is 0.1 Ether.
 
-Example of minting an NFT in Solidity:
+Example of minting an NFT:
 
 `
 function mint() public payable {
@@ -43,7 +43,7 @@ You can retrieve the metadata for a specific NFT by using the `tokenURI` functio
 
 Example of retrieving NFT metadata:
 
-```solidity
+`
 function tokenURI(uint256 tokenId) public override view returns (string memory) {
     return string(
         abi.encodePacked(
@@ -54,8 +54,8 @@ function tokenURI(uint256 tokenId) public override view returns (string memory) 
             '}'
         )
     );
-}
-Asegúrate de aplicar el mismo formato a todas las secciones de tu README para que los encabezados, listas y bloques de código se muestren correctamente en GitHub.
+} 
+`
 
 
 
