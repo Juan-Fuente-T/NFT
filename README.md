@@ -29,12 +29,13 @@ To mint an NFT, use the `mint` function by sending the required payment in Ether
 
 Example of minting an NFT:
 
-`
+```
 function mint() public payable {
     require(msg.value >= 0.1 ether, "Payment insufficient to mint NFT");
     _mint(msg.sender, totalSupply);
     totalSupply++;
-} '
+}
+```
 
 
 ## Viewing NFT Metadata
