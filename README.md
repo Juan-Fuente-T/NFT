@@ -41,7 +41,7 @@ You can retrieve the metadata for a specific NFT by using the tokenURI function,
 Example of retrieving NFT metadata:
 
 solidity
-Copy code
+
 function tokenURI(uint256 tokenId) public override view returns (string memory) {
     return string(
         abi.encodePacked(
