@@ -29,7 +29,7 @@ To mint an NFT, use the `mint` function by sending the required payment in Ether
 
 Example of minting an NFT:
 
-```
+``` solidity
 function mint() public payable {
     require(msg.value >= 0.1 ether, "Payment insufficient to mint NFT");
     _mint(msg.sender, totalSupply);
@@ -44,7 +44,7 @@ You can retrieve the metadata for a specific NFT by using the `tokenURI` functio
 
 Example of retrieving NFT metadata:
 
-`solidity
+```solidity
 function tokenURI(uint256 tokenId) public override view returns (string memory) {
     return string(
         abi.encodePacked(
@@ -56,7 +56,7 @@ function tokenURI(uint256 tokenId) public override view returns (string memory) 
         )
     );
 } 
-`
+```
 
 
 
