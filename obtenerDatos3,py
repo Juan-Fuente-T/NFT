@@ -1,0 +1,115 @@
+import os
+import json
+import requests
+from dotenv import load_dotenv
+from web3 import Web3
+from web3.middleware import geth_poa_middleware
+
+# Se leen el archivo ABI del contrato
+with open("myContractABI.json", "r") as abi_file:
+    myContractABI = json.load(abi_file)
+
+# Se cargan las variables de entorno desde el archivo .env
+load_dotenv()
+
+# SE recuperan las credenciales desde las variables de entorno
+pinata_api_key = os.getenv("API_KEY") #api kei IPFS Pinata
+pinata_secret_api_key = os.getenv("API_SECRET") # api secret IPFS Pinata
+json_cid = os.getenv("CID_DEL_JSON") #metadatos subidos a IPFS Pinata
+folder_cid =os.getenv("CID_DE_IMAGENES") # imagenes subidas IPFS Pinata
+wallet_private_key = os.getenv("WALLET_PRIVATE_KEY")  # clave privada wallet
+eth_rpc_url = os.getenv("WEB3_PROVIDER_URL")  # URL del nodo sepolia
+my_contract_address = os.getenv("CONTRACT_ADDRESS") # direccion del contrato deployado en sepolia
+
+
+# Se construye la URL completa para obtener cada una dinamicamente
+json_url = f"https://black-ashamed-dove-888.mypinata.cloud/ipfs/{json_cid}"
+
+# Encabezados para la autenticación
+headers = {
+    "pinata_api_key": pinata_api_key,
+    "pinata_secret_api_key": pinata_secret_api_key,
+}
+
+# Se realiza la solicitud GET para obtener el JSON con los matadatos
+response = requests.get(json_url, headers=headers)
+
+# Se verifica si la solicitud fue exitosa
+if response.status_code == 200:
+    # Se verifica si la respuesta contiene datos antes de intentar analizarla como JSON
+    if response.text:
+        json_data = response.json()
+        print("JSON descargado exitosamente.") #print de control para depuracion
+        
+        # Se conecta con el nodo Sepolia. Crea una instancia de Web3
+        w3 = Web3(Web3.HTTPProvider(eth_rpc_url))
+    
+        # Se agrega el middleware de PoA
+        w3.middleware_onion.inject(geth_poa_middleware, layer=0)
+
+        # Se importa la billetera utilizando la clave privada
+        wallet = w3.eth.account.from_key(wallet_private_key)
+        
+        print("wallet", wallet)# print de control para depuracion
+
+        # Se despliega el contrato NFTs
+        nfts_contract = w3.eth.contract(
+            address= my_contract_address, abi= myContractABI
+        )  
+        print("nfts_contract", nfts_contract)#print de control para depuracion
+        print('my_contract_address', my_contract_address)
+
+        # Se da a la descripcion un valor identico para todos los NFT
+        description = json_data[0].get("description", "Descripción predeterminada")
+        
+        total_supply = nfts_contract.functions.totalSupply().call()
+
+        # Ajusta el contador para que comience desde el Token ID 2
+        nft_id_counter = total_supply + 1 if total_supply > 0 else 1
+        
+        print(nft_id_counter, total_supply)
+        
+        total_supply = nfts_contract.functions.totalSupply().call()
+        print(f"Total de tokens NFT minteados: {total_supply}")
+        # Se itera a través de los elementos en el JSON
+        for item in json_data:
+            
+            # Se construye la url para cada imagen dinamicamente
+            image_url = f"https://black-ashamed-dove-888.mypinata.cloud/ipfs/{folder_cid}/{item['image']}"
+            name = item.get("name", "Nombre predeterminado")
+            description = item.get("description", "Descripción predeterminada")
+            print(f"URL de la imagen: {image_url}") #print de control para depuracion
+            print("DATOS MINT:", name, description, image_url) #print de control para depuracion
+            
+            # Se procede a llamar a la función mintNFT del contrato NFTs
+            try:
+                tx_hash = nfts_contract.functions.mintNFT(name, description, image_url).transact( #se llama a la funcion mint del smart contract y se ejecuta la transaccion
+                    {"from": wallet.address} # Se autentifica el minteo usando la wallet con la direccion del owner
+                )
+                tx_receipt = w3.eth.waitForTransactionReceipt(tx_hash)#se espera a que se termina la transaccion y se obtienen los datos
+                print(f"NFT minteado: {name}, Tx Hash: {tx_hash}")
+                
+                total_supply = nfts_contract.functions.totalSupply().call()
+                print(f"Total de tokens NFT minteados: {total_supply}")
+    
+            except Exception as e:
+                print(f"Error al mintear el NFT: {str(e)}")  #print de control por si falla el minteo
+            
+        else: #prints de control para depuracion de errores en la obtencion de datos
+            print("La respuesta está vacía, no se pudo analizar como JSON.")
+else:
+    print(f"No se pudo descargar el JSON. Código de estado: {response.status_code}")
+    
+
+    #Este scrpipt descarga las imagenes a local
+"""
+    # Descarga la imagen y la guarda localmente
+            image_response = requests.get(image_url)
+            if image_response.status_code == 200:
+                with open(image_filename, 'wb') as image_file:
+                    image_file.write(image_response.content)
+                print(f"Imagen descargada: {image_filename}")
+            else:
+                print(f"No se pudo descargar la imagen. Código de estado: {image_response.status_code}")
+
+    """

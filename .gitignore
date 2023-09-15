@@ -1,0 +1,15 @@
+# Ignorar archivos y carpetas generados por los compiladores de Solidity
+build/
+contracts/
+
+# Ignorar archivos de respaldo
+*.bak
+
+# Ignorar archivos de configuración local
+.env
+
+# Ignorar archivos de almacenamiento local de Visual Studio Code
+.vscode/
+
+# Ignorar archivos de dependencias y paquetes
+node_modules/
