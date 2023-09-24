@@ -13,3 +13,10 @@ contracts/
 
 # Ignorar archivos de dependencias y paquetes
 node_modules/
+
+ntf_env
+
+#Archivos de desarrollo
+NFT.sol
+NFTs.sol
+NFT_problemas_IDs.sol

@@ -1,62 +1,64 @@
-# Solidity NFT Contract
+# Solidity NFT Contract and Python Script for Minting NFTs Automatically
+This project combines a Solidity smart contract that enables the creation of NFTs (Non-Fungible Tokens) based on the ERC721 standard with a Python script that automates the NFT minting process and manages associated metadata.
 
-This contract represents a simple ERC721-based NFT (Non-Fungible Token) that allows users to mint NFTs by paying a specific price. Each minted NFT has associated metadata, including a name, description, and image URL.
+It has been used to mint a small collection of 12 NFTs based on some of my personally crafted photographs, artistically treated and hosted on Pinata IPFS. 
+The collection is titled "Future Garden."
 
-## Features
+## Solidity NFT Contract
+The Solidity NFT contract is a simple yet powerful implementation of ERC721 that offers the following features:
 
-- Mint NFTs by sending the required payment.
-- Automatically generate metadata for each minted NFT.
-- View NFT metadata using the tokenURI function.
+### Contract Features
+- NFT Minting: A series of NFTs has been minted automatically and restricted only to the contract owner. Each minted NFT receives a unique identifier and associated metadata.
 
-## Getting Started
+- Automated Metadata: The contract automatically generates metadata for each minted NFT, including a name, description, and image URL.
 
-To interact with this contract, you can follow these steps:
+- Metadata Query: Users can access the metadata of a specific NFT using the tokenURI function.
 
-1. Deploy the contract to a supported blockchain network.
+- Getting Started with the Contract
+To interact with the Solidity NFT contract, follow these steps:
 
-2. Mint NFTs by sending the required payment to the contract.
+### Deploy the Contract: Deploy the contract on a compatible blockchain network. Tools like Truffle or Remix can be used for this step.
 
-3. Use the `tokenURI` function to retrieve the metadata for a specific NFT.
+- NFT Minting: Users cannot mint NFTs as it is restricted only to the contract owner. Each generated NFT receives a name, description, and unique associated image.
 
-## Contract Details
+- Metadata Query: Use the tokenURI function to retrieve the metadata of a specific NFT, including its name, description, and image.
 
-- Contract Name: Beholder_IronMan (BIM)
-- Token Symbol: BIM
+- Contract Details
+Contract Name: NFTFactory
+Token Symbol: NFC
 
-## Minting NFTs
+## Python Script for Automated NFT Minting
+The Python script automates the NFT minting process and manages associated metadata. This script works in conjunction with the Solidity NFT contract and offers the following functionalities:
 
-To mint an NFT, use the `mint` function by sending the required payment in Ether. The price per NFT is 0.1 Ether.
+### Script Features
+- Automated Minting: The script interacts with the Solidity NFT contract to automatically mint NFTs. The name, description, and image URL for each NFT are defined.
 
-Example of minting an NFT:
+- Automated Gas Calculation: The script estimates the amount of gas required to mint each NFT, ensuring efficient execution.
 
-``` javascript
-function mint() public payable {
-    require(msg.value >= 0.1 ether, "Payment insufficient to mint NFT");
-    _mint(msg.sender, totalSupply);
-    totalSupply++;
-}
-```
+- Transaction Tracking: The script tracks transactions, waits for confirmations, and provides detailed information about the minting process, avoiding congestion.
+
+- Error Handling: The script handles errors appropriately, ensuring that any issues during minting are logged for review.
+
+### Using the Python Script
+To use the Python script and automate the NFT minting process, the following steps were followed:
+
+- Parameter Configuration: The necessary parameters in the script, such as API keys and contract addresses, were correctly configured.
+
+- Script Execution: The Python script was executed, automating the minting of NFTs according to the provided parameters.
+
+- Tracking and Confirmation: The script tracks transactions and waits for confirmations. It provides detailed information about the status of each minted NFT.
+
+## Contribution and Support
+This project is open-source, so you can contribute, make improvements, and customize it according to your needs. If you have questions or need assistance, feel free to create an issue or request support in the repository's issues section.
+
+#### We hope this project proves to be interesting, representing a step into the world of NFTs and process automation on the blockchain!
+## License
+This project is distributed under the INSERT_APPROPRIATE_LICENSE. Refer to the LICENSE file for more details on the terms of use.
 
 
-## Viewing NFT Metadata
 
-You can retrieve the metadata for a specific NFT by using the `tokenURI` function, which overrides the ERC721 standard function. The metadata includes the name, description, and an image URL.
 
-Example of retrieving NFT metadata:
 
-``` javascript
-function tokenURI(uint256 tokenId) public override view returns (string memory) {
-    return string(
-        abi.encodePacked(
-            '{',
-                '"name": "Beholder",',
-                '"description": "A suggested image of Ironman in the shadow",',
-                '"image": "https://www.pxfuel.com/en/desktop-wallpaper-pizjc",',
-            '}'
-        )
-    );
-} 
-```
 
 
 
