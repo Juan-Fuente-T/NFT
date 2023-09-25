@@ -9,7 +9,8 @@ contract NFTs is ERC721 {
     Counters.Counter private tokenIds; // Contador privado para generar identificadores únicos de tokens
 
     address public owner = 0xe67F18c5064f12470Efc943798236edF45CF3Afb; // Dirección del owner
-
+    //Se utiliza un custom error para evitar usar require y ahorrar gas
+    error NotOwner();
     //Se guardan los datos agrupados para cada NFT
     struct DatosNFTs {
         string nombre;
@@ -23,7 +24,9 @@ contract NFTs is ERC721 {
     event NFTMinted(address indexed creator, uint256 indexed tokenId, string nombre, string descripcion, string imagen); 
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "No eres el owner"); // Modificador que restringe ciertas funciones solo al owner
+        //require(msg.sender == owner, "No eres el owner"); // Modificador que restringe ciertas funciones solo al owner
+        if (msg.sender != owner) //el custom error ahorra gas con respeto al require
+        revert NotOwner();
         _;
     }
 
