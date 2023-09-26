@@ -72,13 +72,13 @@ if response.status_code == 200:
             #print(f"URL de la imagen: {image_url}") #print de control para depuracion
             #print("DATOS MINT:", name, description, image_url) #print de control para depuracion
             
-            # Se hace una llamada para estimar la cantidad de gas necesaria
+            # Se hace una llamada para estimar la cantidad de gas necesaria para el minteo
             gas_estimate = nfts_contract.functions.mintNFT(name, description, image_url).estimate_gas(
                 {"from": wallet.address}
             )
             print(f"Estimación de gas: {gas_estimate}") #impresion de control
-            #gas_estimate1 = gas_estimate * 1.1
-            #print(f"Estimación de gas 1*1: {gas_estimate1}")
+            #se hace una llamada para estimar el precio del gas
+            gas_price = w3.eth.gas_price
             
             try:
                 # Se procede a llamar a la función mintNFT del contrato NFTs
@@ -89,7 +89,8 @@ if response.status_code == 200:
                 transaction = nfts_contract.functions.mintNFT(name, description, image_url).build_transaction({
                     'from': wallet.address,
                     'gas': gas_estimate,
-                    'gasPrice': w3.to_wei('1.4', 'gwei'),
+                    #'gasPrice': w3.to_wei('59', 'gwei'),#pruebas con precio de gas fijo
+                    'gasPrice':gas_price,
                     'nonce': nonce,
                 })
                                 
